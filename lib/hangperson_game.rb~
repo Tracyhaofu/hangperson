@@ -8,16 +8,17 @@ class HangpersonGame
   attr_accessor :word , :guesses, :wrong_guesses 
 
   def initialize(new_word)
-    @word = new_word 
+    @word = new_word.downcase 
     @guesses = '' 
     @wrong_guesses= ''
   end   
   
   def guess(new_guess)
+      
      if new_guess == '' or new_guess =='%' or new_guess == nil  
          raise ArgumentError
      end 
- 
+     !new_guess.downcase
      if (@guesses + @wrong_guesses).include?(new_guess) 
          return false  
      elsif @word.include?(new_guess)  
@@ -41,13 +42,16 @@ class HangpersonGame
   end 
 
   def check_win_or_lose 
-      if @word.length == @guesses.length
-          return :win  
-      elsif @wrong_guesses.length >= 7 
+      
+      if @wrong_guesses.length >= 7 
           return :lose 
-      else 
-          return :play 
       end 
+       @word.chars do |letter| 
+        if !@guesses.include?(letter) 
+          return :play 
+        end 
+       end 
+       return :win  
   end 
 
   def self.get_random_word

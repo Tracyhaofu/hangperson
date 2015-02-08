@@ -8,16 +8,17 @@ class HangpersonGame
   attr_accessor :word , :guesses, :wrong_guesses 
 
   def initialize(new_word)
-    @word = new_word 
+    @word = new_word.downcase 
     @guesses = '' 
     @wrong_guesses= ''
   end   
   
   def guess(new_guess)
-     if new_guess == '' or new_guess =='%' or new_guess == nil  
+      
+     if new_guess == '' or new_guess =='%' or new_guess == nil or !/[a-zA-z]/.match(new_guess.to_s[0])  
          raise ArgumentError
      end 
- 
+     !new_guess.downcase
      if (@guesses + @wrong_guesses).include?(new_guess) 
          return false  
      elsif @word.include?(new_guess)  
